@@ -1,15 +1,18 @@
-use std::error::Error;
-
-use lambda_runtime::{lambda};
+/// See https://github.com/awslabs/aws-lambda-rust-runtime for more info
+/// on Rust runtime for AWS Lambda
+use lambda::handler_fn;
 use simple_logger;
+use tokio;
 
-mod my_handler_mod;
+pub type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
 
+mod my_handler;
 
-fn main() -> Result<(), Box<dyn Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Error> {
     simple_logger::init_with_level(log::Level::Debug)?;
-    lambda!(my_handler_mod::my_handler);
-
+    let func = handler_fn(my_handler::func);
+    lambda::run(func).await?;
     Ok(())
 }
 
