@@ -10,7 +10,7 @@ mod my_handler;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    simple_logger::init_with_level(log::Level::Debug)?;
+    simple_logger::init_with_level(log::Level::Info)?;
     let func = handler_fn(my_handler::func);
     lambda::run(func).await?;
     Ok(())
