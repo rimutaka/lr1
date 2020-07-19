@@ -9,7 +9,19 @@ This repository is a collection of AWS Lambda functions written in Rust.
 * Rust support announcement with examples: https://aws.amazon.com/blogs/opensource/rust-runtime-for-aws-lambda/
 * Lambda Runtime crate (outdated): https://crates.io/crates/lambda_runtime
 
-The 2.1 version of the crate is outdated. I use the latest version from GitHub.
+The crate.io version of Lambda Runtime crate is often outdated. I use the latest version from GitHub.
+
+## Deployment
+
+This is a sample deployment process for `JsonLogger` function into `us-east-1` zone.
+
+```
+cargo build --release --target x86_64-unknown-linux-musl
+
+cp ./target/x86_64-unknown-linux-musl/release/lambda ./bootstrap && zip lambda.zip bootstrap && rm bootstrap
+
+aws lambda update-function-code --region us-east-1 --function-name JsonLogger --zip-file fileb://lambda.zip
+```
 
 
 ## json_logger
